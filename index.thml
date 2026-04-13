@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lahori Flames – Authentic Pakistani Cuisine</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #C0392B;
+    --red-dark: #922B21;
+    --red-light: #E74C3C;
+    --orange: #E67E22;
+    --orange-light: #F39C12;
+    --gold: #D4AC0D;
+    --gold-light: #F4D03F;
+    --cream: #FDF6E3;
+    --cream-dark: #F5E6C8;
+    --brown: #5D4037;
+    --text-dark: #2C1810;
+    --text-mid: #5D3A1A;
+    --text-light: #8D6E47;
+    --white: #FFFFFF;
+    --shadow: 0 4px 24px rgba(44,24,16,0.13);
+    --shadow-lg: 0 8px 40px rgba(44,24,16,0.18);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    background: rgba(44,24,16,0.96);
+    backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5%;
+    height: 68px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo .flame-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(160deg, var(--gold-light), var(--orange), var(--red));
+    border-radius: 50% 50% 40% 40%;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .nav-logo span {
+    font-size: 1.3rem; font-weight: 700;
+    color: var(--white);
+    letter-spacing: 0.5px;
+    font-family: 'Georgia', serif;
+  }
+  .nav-logo span em { color: var(--gold-light); font-style: normal; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.85); text-decoration: none;
+    font-size: 0.9rem; letter-spacing: 0.5px; font-family: Arial, sans-serif;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+  .nav-cta {
+    background: var(--red); color: var(--white) !important;
+    padding: 8px 20px; border-radius: 24px;
+    font-weight: 600 !important;
+  }
+  .nav-cta:hover { background: var(--red-light) !important; color: var(--white) !important; }
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; background: none; border: none; padding: 4px;
+  }
+  .hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: 0.3s; }
+  .mobile-menu {
+    display: none; position: fixed; top: 68px; left: 0; right: 0;
+    background: rgba(44,24,16,0.98); z-index: 998;
+    padding: 1.5rem 5%;
+    border-bottom: 2px solid var(--gold);
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu a {
+    display: block; color: rgba(255,255,255,0.9); text-decoration: none;
+    padding: 0.7rem 0; font-size: 1rem; font-family: Arial, sans-serif;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    background:
+      linear-gradient(135deg, rgba(44,24,16,0.82) 0%, rgba(144,27,20,0.70) 60%, rgba(230,126,34,0.55) 100%),
+      url('https://images.unsplash.com/photo-1567337710282-00832b415979?w=1600&q=80') center/cover no-repeat;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 5% 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 60% 40%, rgba(212,172,13,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-content { max-width: 780px; position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(212,172,13,0.2); border: 1px solid rgba(212,172,13,0.5);
+    color: var(--gold-light); font-size: 0.8rem; letter-spacing: 2px;
+    text-transform: uppercase; font-family: Arial, sans-serif; font-weight: 600;
+    padding: 6px 18px; border-radius: 24px; margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    color: var(--white);
+    line-height: 1.18;
+    margin-bottom: 1.2rem;
+    font-weight: 700;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+  }
+  .hero h1 .highlight { color: var(--gold-light); }
+  .hero p {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: rgba(255,255,255,0.88);
+    max-width: 560px; margin: 0 auto 2.5rem;
+    font-family: Arial, sans-serif;
+    line-height: 1.7;
+  }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 32px; border-radius: 50px;
+    font-size: 1rem; font-family: Arial, sans-serif; font-weight: 600;
+    text-decoration: none; cursor: pointer; border: none;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary {
+    background: var(--red); color: var(--white);
+    box-shadow: 0 4px 20px rgba(192,57,43,0.45);
+  }
+  .btn-primary:hover { background: var(--red-light); box-shadow: 0 6px 28px rgba(192,57,43,0.55); }
+  .btn-outline {
+    background: transparent; color: var(--white);
+    border: 2px solid rgba(255,255,255,0.65);
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: var(--white); }
+  .hero-stats {
+    display: flex; gap: 2.5rem; justify-content: center; flex-wrap: wrap;
+    margin-top: 4rem; padding-top: 2.5rem;
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 1.9rem; font-weight: 700; color: var(--gold-light); display: block; }
+  .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.7); letter-spacing: 1px; font-family: Arial, sans-serif; text-transform: uppercase; }
+
+  /* ─── SECTION COMMON ─── */
+  section { padding: 90px 5%; }
+  .section-header { text-align: center; margin-bottom: 3.5rem; }
+  .section-eyebrow {
+    display: inline-block; color: var(--red);
+    font-size: 0.78rem; letter-spacing: 3px; text-transform: uppercase;
+    font-family: Arial, sans-serif; font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    color: var(--text-dark); line-height: 1.25;
+    margin-bottom: 0.75rem;
+  }
+  .section-sub {
+    font-size: 1rem; color: var(--text-light);
+    font-family: Arial, sans-serif;
+    max-width: 520px; margin: 0 auto;
+    line-height: 1.7;
+  }
+  .divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    border-radius: 3px; margin: 1rem auto 0;
+  }
+
+  /* ─── MENU ─── */
+  .menu-section { background: var(--white); }
+  .menu-tabs {
+    display: flex; justify-content: center; gap: 0.5rem;
+    flex-wrap: wrap; margin-bottom: 2.5rem;
+  }
+  .tab {
+    padding: 8px 22px; border-radius: 24px; cursor: pointer;
+    font-size: 0.88rem; font-family: Arial, sans-serif; font-weight: 600;
+    border: 2px solid var(--cream-dark);
+    background: transparent; color: var(--text-light);
+    transition: all 0.2s;
+  }
+  .tab.active, .tab:hover {
+    background: var(--red); color: var(--white); border-color: var(--red);
+  }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .menu-card {
+    background: var(--cream);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--cream-dark);
+    transition: transform 0.25s, box-shadow 0.25s;
+    display: flex; flex-direction: column;
+  }
+  .menu-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+  .menu-card-img {
+    height: 180px; overflow: hidden; position: relative;
+  }
+  .menu-card-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .menu-card:hover .menu-card-img img { transform: scale(1.07); }
+  .menu-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: var(--red); color: var(--white);
+    font-size: 0.7rem; font-family: Arial, sans-serif; font-weight: 700;
+    padding: 4px 10px; border-radius: 12px; letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .menu-badge.spicy { background: var(--orange); }
+  .menu-badge.veg { background: #27AE60; }
+  .menu-card-body { padding: 1.2rem 1.4rem 1.4rem; flex: 1; display: flex; flex-direction: column; }
+  .menu-card-name {
+    font-size: 1.15rem; font-weight: 700; color: var(--text-dark);
+    margin-bottom: 0.35rem;
+  }
+  .menu-card-desc {
+    font-size: 0.88rem; color: var(--text-light);
+    font-family: Arial, sans-serif; line-height: 1.55;
+    flex: 1; margin-bottom: 1rem;
+  }
+  .menu-card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--cream-dark); padding-top: 0.9rem;
+  }
+  .price { font-size: 1.2rem; font-weight: 700; color: var(--red); }
+  .price span { font-size: 0.8rem; color: var(--text-light); font-family: Arial, sans-serif; font-weight: 400; }
+  .add-btn {
+    background: var(--text-dark); color: var(--white);
+    border: none; border-radius: 20px;
+    padding: 6px 16px; font-size: 0.82rem; font-family: Arial, sans-serif;
+    font-weight: 600; cursor: pointer; transition: background 0.2s;
+  }
+  .add-btn:hover { background: var(--red); }
+
+  /* ─── ABOUT ─── */
+  .about-section { background: var(--cream); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .about-img-wrap { position: relative; }
+  .about-img-wrap img {
+    width: 100%; border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    display: block;
+  }
+  .about-badge-card {
+    position: absolute; bottom: -20px; right: -20px;
+    background: var(--red-dark); color: var(--white);
+    border-radius: var(--radius); padding: 1.2rem 1.4rem;
+    text-align: center; box-shadow: var(--shadow);
+    min-width: 130px;
+  }
+  .about-badge-card .big { font-size: 2.2rem; font-weight: 700; display: block; line-height: 1; }
+  .about-badge-card .small { font-size: 0.78rem; font-family: Arial, sans-serif; opacity: 0.9; margin-top: 4px; }
+  .about-content { }
+  .about-content p {
+    font-family: Arial, sans-serif; color: var(--text-mid);
+    font-size: 1rem; line-height: 1.8; margin-bottom: 1.2rem;
+  }
+  .about-features {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem; margin: 2rem 0;
+  }
+  .feature-item {
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .feature-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: rgba(192,57,43,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .feature-text h4 { font-size: 0.9rem; color: var(--text-dark); font-weight: 700; margin-bottom: 2px; }
+  .feature-text p { font-size: 0.8rem; color: var(--text-light); font-family: Arial, sans-serif; line-height: 1.4; margin: 0; }
+
+  /* ─── CONTACT ─── */
+  .contact-section { background: var(--text-dark); }
+  .contact-section .section-title { color: var(--white); }
+  .contact-section .section-eyebrow { color: var(--gold-light); }
+  .contact-section .divider { background: linear-gradient(90deg, var(--gold), var(--orange)); }
+  .contact-section .section-sub { color: rgba(255,255,255,0.65); }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; max-width: 1100px; margin: 0 auto;
+    align-items: start;
+  }
+  .contact-info { }
+  .contact-item {
+    display: flex; gap: 1rem; margin-bottom: 1.8rem; align-items: flex-start;
+  }
+  .contact-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: rgba(212,172,13,0.15); border: 1px solid rgba(212,172,13,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .contact-text h4 { color: var(--gold-light); font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; font-family: Arial, sans-serif; font-weight: 700; margin-bottom: 4px; }
+  .contact-text p, .contact-text a { color: rgba(255,255,255,0.82); font-family: Arial, sans-serif; font-size: 0.95rem; text-decoration: none; line-height: 1.5; }
+  .contact-text a:hover { color: var(--gold-light); }
+  .whatsapp-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #25D366; color: var(--white);
+    padding: 14px 28px; border-radius: 50px;
+    font-family: Arial, sans-serif; font-weight: 700; font-size: 1rem;
+    text-decoration: none; margin-top: 1rem;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .whatsapp-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(37,211,102,0.5); }
+  .whatsapp-icon {
+    width: 22px; height: 22px;
+    background: rgba(255,255,255,0.25); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .map-placeholder {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 2px solid rgba(212,172,13,0.3);
+    height: 340px;
+    background: #1a2a1a;
+    position: relative;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .map-placeholder iframe {
+    width: 100%; height: 100%; border: none;
+    position: absolute; inset: 0;
+    filter: grayscale(0.3) contrast(1.05);
+    border-radius: var(--radius);
+  }
+  .map-overlay {
+    position: relative; z-index: 2;
+    color: rgba(255,255,255,0.85);
+    font-family: Arial, sans-serif;
+    pointer-events: none;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #1C0E08; color: rgba(255,255,255,0.75);
+    padding: 3rem 5% 1.5rem;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem; max-width: 1100px; margin: 0 auto;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .footer-brand .logo { font-size: 1.5rem; font-weight: 700; color: var(--white); margin-bottom: 0.75rem; }
+  .footer-brand .logo em { color: var(--gold-light); font-style: normal; }
+  .footer-brand p { font-size: 0.88rem; font-family: Arial, sans-serif; line-height: 1.7; max-width: 260px; }
+  .footer-col h5 { color: var(--gold-light); font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; font-family: Arial, sans-serif; font-weight: 700; margin-bottom: 1rem; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.5rem; }
+  .footer-col ul li a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.88rem; font-family: Arial, sans-serif; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--gold-light); }
+  .footer-col p { font-size: 0.88rem; font-family: Arial, sans-serif; line-height: 1.8; }
+  .footer-bottom {
+    text-align: center; padding-top: 1.5rem; font-size: 0.8rem;
+    font-family: Arial, sans-serif; max-width: 1100px; margin: 0 auto;
+  }
+
+  /* ─── SCROLL REVEAL (simple JS) ─── */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .about-badge-card { right: 10px; bottom: -15px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 1.5rem; }
+    .about-features { grid-template-columns: 1fr; }
+    section { padding: 70px 5%; }
+  }
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 2.1rem; }
+    .hero-btns { flex-direction: column; align-items: center; }
+    .btn { width: 100%; max-width: 300px; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#home" class="nav-logo">
+    <div class="flame-icon">🔥</div>
+    <span>Lahori <em>Flames</em></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://wa.me/923001234567" class="nav-cta">Order Now</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#menu" onclick="closeMenu()">Menu</a>
+  <a href="#about" onclick="closeMenu()">About Us</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+  <a href="https://wa.me/923001234567">📱 Order on WhatsApp</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-badge">🌶 Authentic Lahori Cuisine</div>
+    <h1>Where Every Bite<br>Tells a <span class="highlight">Lahori Story</span></h1>
+    <p>Experience the bold, smoky flavours of Lahore's legendary kitchens — crafted with century-old recipes, fresh spices, and a passion that burns as bright as our flames.</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn btn-primary">Explore Our Menu</a>
+      <a href="https://wa.me/923001234567" class="btn btn-outline">📱 Order Now</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">18+</span><span class="stat-label">Years of Taste</span></div>
+      <div class="stat"><span class="stat-num">50k+</span><span class="stat-label">Happy Guests</span></div>
+      <div class="stat"><span class="stat-num">40+</span><span class="stat-label">Menu Items</span></div>
+      <div class="stat"><span class="stat-num">4.8★</span><span class="stat-label">Rating</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MENU ─── -->
+<section class="menu-section" id="menu">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Our Specialities</span>
+    <h2 class="section-title">Lahori Favourites</h2>
+    <div class="divider"></div>
+    <p class="section-sub" style="margin-top:1rem;">Every dish is slow-cooked with hand-ground spices, bringing the true taste of Old Lahore to your table.</p>
+  </div>
+
+  <div class="menu-grid">
+    <!-- Card 1 -->
+    <div class="menu-card reveal">
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=600&q=80" alt="Lahori Karahi" loading="lazy">
+        <span class="menu-badge spicy">Signature</span>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Lahori Karahi 🔥</div>
+        <p class="menu-card-desc">Our legendary open-flame karahi — chicken or mutton braised with tomatoes, fresh ginger, and smoky whole spices in a traditional iron wok.</p>
+        <div class="menu-card-footer">
+          <div class="price">Rs. 1,450 <span>/ serving</span></div>
+          <button class="add-btn">+ Order</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="menu-card reveal">
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&q=80" alt="Seekh Kebab" loading="lazy">
+        <span class="menu-badge">Popular</span>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Seekh Kebab Platter</div>
+        <p class="menu-card-desc">Minced beef skewers blended with onions, fresh coriander, and a secret spice mix, char-grilled to juicy perfection over open coals.</p>
+        <div class="menu-card-footer">
+          <div class="price">Rs. 1,100 <span>/ 6 pcs</span></div>
+          <button class="add-btn">+ Order</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="menu-card reveal">
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=600&q=80" alt="Nihari" loading="lazy">
+        <span class="menu-badge">Heritage</span>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Slow-Cooked Nihari</div>
+        <p class="menu-card-desc">A Lahore breakfast icon — tender beef shank simmered overnight in a rich, aromatic broth, topped with fresh ginger, lemon, and crispy onions.</p>
+        <div class="menu-card-footer">
+          <div class="price">Rs. 1,200 <span>/ bowl</span></div>
+          <button class="add-btn">+ Order</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="menu-card reveal">
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&q=80" alt="Biryani" loading="lazy">
+        <span class="menu-badge spicy">Spicy</span>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Lahori Dum Biryani 🌶</div>
+        <p class="menu-card-desc">Fragrant basmati layered with spiced mutton and slow-cooked under dum — served with chilled raita and a tangy cucumber salad.</p>
+        <div class="menu-card-footer">
+          <div class="price">Rs. 950 <span>/ plate</span></div>
+          <button class="add-btn">+ Order</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="menu-card reveal">
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80" alt="Naan" loading="lazy">
+        <span class="menu-badge veg">Veg</span>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Tandoori Naan Basket</div>
+        <p class="menu-card-desc">Fluffy, blistered naans pulled straight from the tandoor — choose from plain, garlic-butter, stuffed keema, or sweet peshwari.</p>
+        <div class="menu-card-footer">
+          <div class="price">Rs. 180 <span>/ piece</span></div>
+          <button class="add-btn">+ Order</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="menu-card reveal">
+      <div class="menu-card-img">
+        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&q=80" alt="Dessert" loading="lazy">
+        <span class="menu-badge">Sweet</span>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Gajar Ka Halwa</div>
+        <p class="menu-card-desc">Classic winter dessert of slow-sautéed carrot pudding enriched with desi ghee, whole milk, cardamom, and topped with crushed pistachios.</p>
+        <div class="menu-card-footer">
+          <div class="price">Rs. 350 <span>/ bowl</span></div>
+          <button class="add-btn">+ Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section class="about-section" id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap reveal">
+      <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80" alt="Our Restaurant">
+      <div class="about-badge-card">
+        <span class="big">18</span>
+        <span class="small">Years of<br>Authentic Taste</span>
+      </div>
+    </div>
+    <div class="about-content reveal">
+      <span class="section-eyebrow">Our Story</span>
+      <h2 class="section-title" style="text-align:left; margin-bottom:1.2rem;">Born in the Heart of Old Lahore</h2>
+      <p>Lahori Flames was founded in 2007 in the bustling streets of Gulberg, Lahore, with a single karahi, an iron wok, and a grandmother's recipe passed down through four generations. Our founder, Ustad Bashir Ahmad, had one mission: to bring the raw, fire-kissed flavours of Lahore's iconic food street to every family's table.</p>
+      <p>Today, we remain true to our roots — no shortcuts, no compromises. Every spice is hand-ground daily, every karahi is cooked to order, and every guest is treated like family. That's the Lahori Flames promise.</p>
+      <div class="about-features">
+        <div class="feature-item">
+          <div class="feature-icon">🌿</div>
+          <div class="feature-text">
+            <h4>Fresh Daily Spices</h4>
+            <p>Ground in-house every morning</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🔥</div>
+          <div class="feature-text">
+            <h4>Open-Flame Cooking</h4>
+            <p>Traditional wood & gas fire</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">👨‍🍳</div>
+          <div class="feature-text">
+            <h4>Master Chefs</h4>
+            <p>20+ years of culinary expertise</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🏠</div>
+          <div class="feature-text">
+            <h4>Family Dining</h4>
+            <p>Private rooms available</p>
+          </div>
+        </div>
+      </div>
+      <a href="#contact" class="btn btn-primary" style="margin-top:0.5rem;">Visit Us Today</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section class="contact-section" id="contact">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Find Us</span>
+    <h2 class="section-title">Come Taste Lahore</h2>
+    <div class="divider"></div>
+    <p class="section-sub" style="margin-top:1rem;">We're open every day. Walk in, call ahead, or WhatsApp us for reservations and takeaway orders.</p>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div class="contact-text">
+          <h4>Address</h4>
+          <p>47-B, Main Boulevard, Gulberg III<br>Lahore, Punjab, Pakistan</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div class="contact-text">
+          <h4>Opening Hours</h4>
+          <p>Monday – Sunday<br>12:00 PM – 1:00 AM</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div class="contact-text">
+          <h4>Phone & Reservations</h4>
+          <a href="tel:+924235678901">+92 42 3567 8901</a><br>
+          <a href="tel:+923001234567">+92 300 123 4567</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-text">
+          <h4>Email</h4>
+          <a href="mailto:hello@lahoriflames.pk">hello@lahoriflames.pk</a>
+        </div>
+      </div>
+      <a href="https://wa.me/923001234567?text=Hi!%20I%20would%20like%20to%20place%20an%20order%20from%20Lahori%20Flames." class="whatsapp-btn" target="_blank" rel="noopener">
+        <span class="whatsapp-icon">💬</span>
+        Chat on WhatsApp
+      </a>
+    </div>
+
+    <div class="reveal">
+      <div class="map-placeholder">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3401.8753963!2d74.3476!3d31.5204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzHCsDMxJzEzLjQiTiA3NMKwMjAnNTEuNCJF!5e0!3m2!1sen!2s!4v1234567890"
+          allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Lahori Flames Location">
+        </iframe>
+      </div>
+      <div style="margin-top:1.2rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+        <a href="https://maps.google.com/?q=Gulberg+III+Lahore" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);padding:8px 16px;border-radius:8px;font-family:Arial,sans-serif;font-size:0.85rem;text-decoration:none;transition:background 0.2s;"
+           onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+          🗺 Get Directions
+        </a>
+        <a href="https://wa.me/923001234567" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,211,102,0.15);border:1px solid rgba(37,211,102,0.35);color:#4EDE8B;padding:8px 16px;border-radius:8px;font-family:Arial,sans-serif;font-size:0.85rem;text-decoration:none;transition:background 0.2s;"
+           onmouseover="this.style.background='rgba(37,211,102,0.25)'" onmouseout="this.style.background='rgba(37,211,102,0.15)'">
+          📱 WhatsApp Order
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">Lahori <em>Flames</em> 🔥</div>
+      <p>Where tradition meets the thrill of the flame. Serving authentic Lahori cuisine to families across Gulberg since 2007.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Quick Links</h5>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#menu">Our Menu</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <p>47-B Main Blvd, Gulberg III<br>Lahore, Pakistan<br><br>
+        <a href="tel:+924235678901" style="color:rgba(255,255,255,0.65);text-decoration:none;">+92 42 3567 8901</a><br>
+        <a href="https://wa.me/923001234567" style="color:#4EDE8B;text-decoration:none;">WhatsApp Us</a>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p style="color:rgba(255,255,255,0.4);">© 2025 Lahori Flames. All rights reserved. Made with 🔥 in Lahore, Pakistan.</p>
+  </div>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // Close mobile menu on outside click
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.querySelector('.hamburger');
+    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.classList.add('visible');
+        // Stagger children cards
+        const siblings = el.target.parentElement.querySelectorAll('.reveal');
+        siblings.forEach((s, i) => {
+          setTimeout(() => s.classList.add('visible'), i * 80);
+        });
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Smooth active nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current
+        ? 'var(--gold-light)' : '';
+    });
+  });
+</script>
+</body>
+</html>
