@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lahori Flames — Fire & Flavour Since 1987</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* -------------------------------------------------------
+   ROOT & RESET
+------------------------------------------------------- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink:       #0D0905;
+  --ink2:      #1A1009;
+  --ink3:      #241610;
+  --ember:     #C0390A;
+  --ember-lt:  #E04A12;
+  --flame:     #E8621A;
+  --flame-lt:  #FF7A2E;
+  --amber:     #D4860A;
+  --gold:      #C9920A;
+  --gold-lt:   #F2B830;
+  --gold-pale: #F7D470;
+  --cream:     #F5EDD8;
+  --cream2:    #EEE2C4;
+  --smoke:     rgba(245,237,216,0.07);
+  --smoke2:    rgba(245,237,216,0.12);
+
+  --ff-display: 'Playfair Display', Georgia, serif;
+  --ff-sub:     'Cormorant Garamond', Georgia, serif;
+  --ff-ui:      'Montserrat', sans-serif;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-ui);
+  background: var(--ink);
+  color: var(--cream);
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 9999;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* -------------------------------------------------------
+   NAV
+------------------------------------------------------- */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 6%; height: 76px;
+  transition: background 0.5s, border-color 0.5s;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled {
+  background: rgba(13,9,5,0.94);
+  border-bottom-color: rgba(201,146,10,0.2);
+  backdrop-filter: blur(20px);
+}
+.nav-logo { text-decoration: none; }
+.nav-logo-inner { display: flex; flex-direction: column; line-height: 1; }
+.nav-logo .n1 {
+  font-family: var(--ff-display); font-size: 1.35rem; font-weight: 700;
+  color: var(--gold-lt); letter-spacing: 0.03em;
+}
+.nav-logo .n2 {
+  font-family: var(--ff-ui); font-size: 0.55rem; font-weight: 500;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: rgba(245,237,216,0.45); margin-top: 2px;
+}
+.nav-links { display: flex; align-items: center; gap: 0.15rem; list-style: none; }
+.nav-links a {
+  font-family: var(--ff-ui); font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none;
+  color: rgba(245,237,216,0.65); padding: 8px 16px; border-radius: 2px;
+  transition: color 0.25s;
+}
+.nav-links a:hover { color: var(--gold-lt); }
+.nav-reserve {
+  background: none !important; border: 1px solid rgba(201,146,10,0.5) !important;
+  color: var(--gold-lt) !important; border-radius: 2px !important;
+  transition: background 0.25s, border-color 0.25s !important;
+}
+.nav-reserve:hover { background: rgba(201,146,10,0.15) !important; border-color: var(--gold-lt) !important; }
+.hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  flex-direction: column; gap: 5px; padding: 4px;
+}
+.hamburger span { display: block; width: 22px; height: 1.5px; background: var(--cream); transition: 0.3s; }
+.mob-drawer {
+  display: none; position: fixed; top: 76px; left: 0; right: 0; z-index: 499;
+  background: rgba(13,9,5,0.98); border-bottom: 1px solid rgba(201,146,10,0.15);
+  padding: 2rem 6%; backdrop-filter: blur(20px);
+}
+.mob-drawer.open { display: block; }
+.mob-drawer a {
+  display: block; font-family: var(--ff-ui); font-size: 0.78rem; font-weight: 500;
+  letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none;
+  color: rgba(245,237,216,0.7); padding: 1rem 0;
+  border-bottom: 1px solid rgba(245,237,216,0.06); transition: color 0.2s;
+}
+.mob-drawer a:last-child { border: none; color: var(--gold-lt); }
+
+/* -------------------------------------------------------
+   HERO
+------------------------------------------------------- */
+.hero {
+  position: relative; min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center;
+  overflow: hidden;
+}
+.hero-bg-half {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 80% at 75% 50%, rgba(192,57,10,0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 50% at 20% 80%, rgba(212,134,10,0.12) 0%, transparent 55%),
+    linear-gradient(160deg, #0D0905 0%, #1A0E06 40%, #0F0804 100%);
+}
+.hero-img-col {
+  position: relative; height: 100vh;
+  overflow: hidden; z-index: 1;
+}
+.hero-img-col::before {
+  content: ''; position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to right, var(--ink) 0%, transparent 30%),
+              linear-gradient(to top, rgba(13,9,5,0.7) 0%, transparent 50%);
+}
+.hero-food-img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center;
+  filter: saturate(1.15) brightness(0.78);
+  animation: heroZoom 18s ease-in-out infinite alternate;
+}
+@keyframes heroZoom {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1.0); }
+}
+.hero-text-col {
+  position: relative; z-index: 2;
+  padding: 120px 8% 80px 10%;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.hero-pretitle {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 2rem;
+  animation: fadeSlideUp 1s var(--ease-out) 0.1s both;
+}
+.pretitle-line { width: 36px; height: 1px; background: var(--gold); }
+.pretitle-text {
+  font-family: var(--ff-ui); font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold-lt);
+}
+.hero h1 {
+  font-family: var(--ff-display); font-weight: 900;
+  font-size: clamp(3.2rem, 5.5vw, 5.5rem);
+  line-height: 0.95; letter-spacing: -0.02em;
+  margin-bottom: 2rem;
+  animation: fadeSlideUp 1s var(--ease-out) 0.25s both;
+}
+.hero h1 .l1 { display: block; color: var(--cream); }
+.hero h1 .l2 { display: block; color: var(--gold-lt); font-style: italic; }
+.hero h1 .l3 { display: block; color: var(--ember); }
+.hero-desc {
+  font-family: var(--ff-sub); font-size: 1.1rem; font-weight: 300;
+  color: rgba(245,237,216,0.65); line-height: 1.8; max-width: 400px;
+  margin-bottom: 2.5rem;
+  animation: fadeSlideUp 1s var(--ease-out) 0.4s both;
+}
+.hero-ctas {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  animation: fadeSlideUp 1s var(--ease-out) 0.55s both;
+}
+.btn-flame {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--ff-ui); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none;
+  padding: 16px 32px; border-radius: 2px; cursor: pointer; border: none;
+  background: var(--ember); color: var(--cream);
+  position: relative; overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 30px rgba(192,57,10,0.45), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.btn-flame::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--flame-lt), var(--ember));
+  opacity: 0; transition: opacity 0.25s;
+}
+.btn-flame:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(192,57,10,0.6); }
+.btn-flame:hover::before { opacity: 1; }
+.btn-flame span { position: relative; z-index: 1; }
+.btn-outline-gold {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--ff-ui); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none;
+  padding: 15px 28px; border-radius: 2px; cursor: pointer;
+  background: transparent; color: var(--gold-lt);
+  border: 1px solid rgba(201,146,10,0.5);
+  transition: background 0.25s, border-color 0.25s, transform 0.2s;
+}
+.btn-outline-gold:hover { background: rgba(201,146,10,0.1); border-color: var(--gold-lt); transform: translateY(-2px); }
+.hero-awards {
+  display: flex; gap: 2rem; margin-top: 4rem; padding-top: 2.5rem;
+  border-top: 1px solid rgba(245,237,216,0.1);
+  animation: fadeSlideUp 1s var(--ease-out) 0.7s both;
+}
+.award { }
+.award-num {
+  font-family: var(--ff-display); font-size: 2.2rem; font-weight: 700; color: var(--gold-lt);
+  line-height: 1; display: block;
+}
+.award-label {
+  font-family: var(--ff-ui); font-size: 0.62rem; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase; color: rgba(245,237,216,0.4);
+  margin-top: 4px; display: block;
+}
+.hero-scroll {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: fadeSlideUp 1s var(--ease-out) 1s both;
+}
+.hero-scroll span {
+  font-family: var(--ff-ui); font-size: 0.58rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: rgba(245,237,216,0.3);
+}
+.scroll-pill {
+  width: 1px; height: 48px;
+  background: linear-gradient(to bottom, rgba(201,146,10,0.7), transparent);
+  animation: scrollDrop 2.5s ease-in-out infinite;
+}
+@keyframes scrollDrop { 0%,100%{transform:scaleY(1);opacity:0.5} 50%{transform:scaleY(1.2);opacity:1} }
+
+/* -------------------------------------------------------
+   MARQUEE STRIP
+------------------------------------------------------- */
+.marquee-strip {
+  background: var(--ember); overflow: hidden;
+  padding: 14px 0; border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+.marquee-track {
+  display: flex; gap: 0;
+  animation: marqueeScroll 22s linear infinite;
+  width: max-content;
+}
+.marquee-item {
+  display: flex; align-items: center; gap: 1.5rem;
+  padding: 0 2rem; white-space: nowrap;
+  font-family: var(--ff-ui); font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.9);
+}
+.marquee-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.5); }
+@keyframes marqueeScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* -------------------------------------------------------
+   ABOUT
+------------------------------------------------------- */
+.about-section {
+  padding: 120px 6%;
+  background: var(--ink2);
+  position: relative; overflow: hidden;
+}
+.about-section::before {
+  content: ''; position: absolute;
+  top: -100px; right: -100px; width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(192,57,10,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; max-width: 1200px; margin: 0 auto; }
+.about-img-side { position: relative; }
+.about-img-frame {
+  position: relative; border-radius: 2px; overflow: hidden;
+  aspect-ratio: 3/4; max-height: 600px;
+}
+.about-img-frame img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: saturate(1.1) brightness(0.85);
+  transition: transform 0.8s var(--ease-out);
+}
+.about-img-frame:hover img { transform: scale(1.04); }
+.about-img-frame::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,16,9,0.6) 0%, transparent 50%);
+}
+.about-corner-deco {
+  position: absolute; bottom: -20px; right: -20px;
+  width: 140px; height: 140px;
+  border: 1px solid rgba(201,146,10,0.3); border-radius: 2px;
+  z-index: -1;
+}
+.about-year-badge {
+  position: absolute; top: 20px; left: -20px;
+  background: var(--ember); color: var(--cream);
+  padding: 1rem 1.2rem; text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.about-year-badge .yr { font-family: var(--ff-display); font-size: 1.8rem; font-weight: 700; line-height: 1; display: block; }
+.about-year-badge .yr-lbl { font-family: var(--ff-ui); font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.8; margin-top: 2px; display: block; }
+.about-text-side { }
+.section-eyebrow {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 1.5rem;
+}
+.eyebrow-line { width: 32px; height: 1px; background: var(--gold); }
+.eyebrow-text {
+  font-family: var(--ff-ui); font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-lt);
+}
+.section-title {
+  font-family: var(--ff-display); font-weight: 700;
+  font-size: clamp(2rem, 3.5vw, 3rem); line-height: 1.1;
+  color: var(--cream); margin-bottom: 1.5rem;
+}
+.section-title em { color: var(--gold-lt); font-style: italic; }
+.about-lead {
+  font-family: var(--ff-sub); font-size: 1.15rem; font-weight: 300;
+  font-style: italic; color: rgba(245,237,216,0.75);
+  line-height: 1.7; margin-bottom: 1.2rem;
+  border-left: 2px solid var(--ember); padding-left: 1.2rem;
+}
+.about-body {
+  font-family: var(--ff-ui); font-size: 0.88rem; font-weight: 300;
+  color: rgba(245,237,216,0.55); line-height: 1.9; margin-bottom: 2rem;
+}
+.about-pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 2.5rem; }
+.pillar {
+  padding: 1.2rem; background: rgba(245,237,216,0.04);
+  border: 1px solid rgba(245,237,216,0.08); border-radius: 2px;
+  transition: border-color 0.3s, background 0.3s;
+}
+.pillar:hover { border-color: rgba(201,146,10,0.3); background: rgba(201,146,10,0.04); }
+.pillar-icon { font-size: 1.4rem; margin-bottom: 0.5rem; display: block; }
+.pillar-title { font-family: var(--ff-display); font-size: 0.95rem; font-weight: 600; color: var(--cream); margin-bottom: 0.25rem; }
+.pillar-sub { font-family: var(--ff-ui); font-size: 0.75rem; color: rgba(245,237,216,0.4); line-height: 1.5; }
+
+/* -------------------------------------------------------
+   MENU
+------------------------------------------------------- */
+.menu-section {
+  padding: 120px 6%;
+  background: var(--ink);
+  position: relative;
+}
+.menu-section::before {
+  content: 'MENU'; position: absolute;
+  font-family: var(--ff-display); font-size: 18vw; font-weight: 900;
+  color: rgba(245,237,216,0.018); top: 50%; left: 50%;
+  transform: translate(-50%, -50%); pointer-events: none; white-space: nowrap;
+  letter-spacing: -0.05em;
+}
+.menu-inner { max-width: 1200px; margin: 0 auto; }
+.menu-header { text-align: center; margin-bottom: 5rem; }
+.menu-tabs {
+  display: flex; justify-content: center; gap: 0; margin-top: 2rem;
+  border: 1px solid rgba(245,237,216,0.1); border-radius: 2px;
+  width: fit-content; margin-left: auto; margin-right: auto; overflow: hidden;
+}
+.menu-tab {
+  font-family: var(--ff-ui); font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 10px 24px; background: transparent; color: rgba(245,237,216,0.5);
+  border: none; cursor: pointer; border-right: 1px solid rgba(245,237,216,0.1);
+  transition: background 0.2s, color 0.2s;
+}
+.menu-tab:last-child { border-right: none; }
+.menu-tab.active { background: var(--ember); color: var(--cream); }
+.menu-tab:hover:not(.active) { background: rgba(245,237,216,0.05); color: var(--cream); }
+.menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.menu-grid > * { border-right: 1px solid rgba(245,237,216,0.07); border-bottom: 1px solid rgba(245,237,216,0.07); }
+.menu-grid > *:nth-child(2n) { border-right: none; }
+.menu-grid > *:nth-last-child(-n+2) { border-bottom: none; }
+.menu-item {
+  display: grid; grid-template-columns: 100px 1fr;
+  gap: 0; overflow: hidden;
+  transition: background 0.3s;
+  position: relative;
+}
+.menu-item:hover { background: rgba(245,237,216,0.03); }
+.menu-item::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--ember); transform: scaleY(0); transform-origin: bottom;
+  transition: transform 0.35s var(--ease-out);
+}
+.menu-item:hover::before { transform: scaleY(1); }
+.menu-item-img {
+  width: 100px; height: 100px; flex-shrink: 0; overflow: hidden;
+  position: relative; align-self: center;
+  margin: 1.5rem 0 1.5rem 1.5rem;
+  border-radius: 2px;
+}
+.menu-item-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: saturate(1.15) brightness(0.9);
+  transition: transform 0.5s var(--ease-out), filter 0.3s;
+}
+.menu-item:hover .menu-item-img img { transform: scale(1.1); filter: saturate(1.3) brightness(1); }
+.menu-item-body { padding: 1.5rem 1.5rem 1.5rem 1.2rem; display: flex; flex-direction: column; justify-content: center; }
+.menu-item-cat {
+  font-family: var(--ff-ui); font-size: 0.58rem; font-weight: 600;
+  letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+.menu-item-name {
+  font-family: var(--ff-display); font-size: 1.05rem; font-weight: 600;
+  color: var(--cream); margin-bottom: 0.4rem; line-height: 1.2;
+}
+.menu-item-desc {
+  font-family: var(--ff-ui); font-size: 0.75rem; font-weight: 300;
+  color: rgba(245,237,216,0.45); line-height: 1.6; margin-bottom: 0.8rem;
+}
+.menu-item-footer { display: flex; align-items: center; justify-content: space-between; }
+.menu-price {
+  font-family: var(--ff-display); font-size: 1.1rem; font-weight: 700;
+  color: var(--gold-lt);
+}
+.menu-price span { font-size: 0.72rem; font-weight: 400; color: rgba(245,237,216,0.3); font-family: var(--ff-ui); }
+.spice-dots { display: flex; gap: 3px; }
+.spice-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ember); opacity: 0.3; }
+.spice-dot.lit { opacity: 1; }
+
+/* -------------------------------------------------------
+   EXPERIENCE / ATMOSPHERE
+------------------------------------------------------- */
+.experience-section {
+  padding: 0;
+  position: relative;
+  height: 70vh; min-height: 500px;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.exp-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    linear-gradient(to right, rgba(13,9,5,0.95) 0%, rgba(13,9,5,0.4) 50%, rgba(13,9,5,0.7) 100%),
+    url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&q=80') center/cover no-repeat;
+  filter: saturate(1.2) brightness(0.6);
+}
+.exp-content { position: relative; z-index: 1; text-align: center; max-width: 700px; padding: 0 6%; }
+.exp-content blockquote {
+  font-family: var(--ff-display); font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-weight: 400; font-style: italic; line-height: 1.35;
+  color: var(--cream); margin-bottom: 1.5rem;
+}
+.exp-content blockquote em { color: var(--gold-lt); font-style: normal; }
+.exp-attr {
+  font-family: var(--ff-ui); font-size: 0.65rem; font-weight: 500;
+  letter-spacing: 0.3em; text-transform: uppercase; color: rgba(245,237,216,0.4);
+}
+
+/* -------------------------------------------------------
+   CONTACT
+------------------------------------------------------- */
+.contact-section {
+  padding: 120px 6%;
+  background: var(--ink2);
+}
+.contact-inner { max-width: 1200px; margin: 0 auto; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.contact-left { }
+.contact-info-list { list-style: none; margin-bottom: 2.5rem; }
+.contact-info-list li {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  padding: 1.2rem 0; border-bottom: 1px solid rgba(245,237,216,0.06);
+}
+.contact-info-list li:last-child { border-bottom: none; }
+.ci-icon {
+  width: 40px; height: 40px; border-radius: 2px; flex-shrink: 0;
+  background: rgba(192,57,10,0.12); border: 1px solid rgba(192,57,10,0.2);
+  display: flex; align-items: center; justify-content: center; font-size: 1rem;
+}
+.ci-label {
+  font-family: var(--ff-ui); font-size: 0.6rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 3px; display: block;
+}
+.ci-val {
+  font-family: var(--ff-ui); font-size: 0.88rem; font-weight: 300;
+  color: rgba(245,237,216,0.75); line-height: 1.5;
+}
+.ci-val a { color: rgba(245,237,216,0.75); text-decoration: none; transition: color 0.2s; }
+.ci-val a:hover { color: var(--gold-lt); }
+.hours-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 2.5rem; border: 1px solid rgba(245,237,216,0.08); border-radius: 2px; overflow: hidden; }
+.hour-row {
+  display: flex; justify-content: space-between;
+  padding: 0.8rem 1.1rem; border-bottom: 1px solid rgba(245,237,216,0.06);
+  font-family: var(--ff-ui); font-size: 0.78rem;
+}
+.hour-row:nth-child(2n) { border-left: 1px solid rgba(245,237,216,0.06); }
+.hour-row:last-child, .hour-row:nth-last-child(2) { border-bottom: none; }
+.hour-day { color: rgba(245,237,216,0.5); font-weight: 400; }
+.hour-time { color: var(--cream); font-weight: 500; }
+.hour-time.closed { color: rgba(245,237,216,0.25); }
+.wa-button {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  background: #1A7A3C; color: var(--cream);
+  padding: 16px 24px; border-radius: 2px; text-decoration: none;
+  font-family: var(--ff-ui); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  box-shadow: 0 4px 24px rgba(26,122,60,0.35);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.wa-button:hover { background: #228B47; transform: translateY(-2px); box-shadow: 0 8px 36px rgba(26,122,60,0.5); }
+.wa-button svg { width: 22px; height: 22px; flex-shrink: 0; }
+.contact-right { }
+.map-frame {
+  width: 100%; height: 360px; border-radius: 2px; overflow: hidden;
+  border: 1px solid rgba(245,237,216,0.1); position: relative;
+  margin-bottom: 1.2rem;
+}
+.map-frame iframe { width: 100%; height: 100%; border: none; display: block; filter: grayscale(0.25) contrast(1.05); }
+.map-action-row { display: flex; gap: 0.75rem; }
+.map-btn {
+  display: inline-flex; align-items: center; gap: 7px; flex: 1; justify-content: center;
+  padding: 10px 16px; border-radius: 2px;
+  font-family: var(--ff-ui); font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none;
+  border: 1px solid rgba(245,237,216,0.12); color: rgba(245,237,216,0.6);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.map-btn:hover { border-color: rgba(201,146,10,0.4); color: var(--gold-lt); background: rgba(201,146,10,0.05); }
+
+/* -------------------------------------------------------
+   FOOTER
+------------------------------------------------------- */
+footer {
+  background: var(--ink); border-top: 1px solid rgba(245,237,216,0.08);
+  padding: 5rem 6% 2.5rem;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1.2fr;
+  gap: 4rem; max-width: 1200px; margin: 0 auto;
+  padding-bottom: 4rem; border-bottom: 1px solid rgba(245,237,216,0.07);
+}
+.footer-brand-col { }
+.footer-logo-big {
+  font-family: var(--ff-display); font-size: 1.5rem; font-weight: 700;
+  color: var(--gold-lt); margin-bottom: 0.3rem; display: block;
+}
+.footer-tagline {
+  font-family: var(--ff-sub); font-size: 0.85rem; font-style: italic;
+  color: rgba(245,237,216,0.4); margin-bottom: 1.5rem; display: block;
+}
+.footer-bio {
+  font-family: var(--ff-ui); font-size: 0.8rem; font-weight: 300;
+  color: rgba(245,237,216,0.4); line-height: 1.8; max-width: 240px;
+  margin-bottom: 1.5rem;
+}
+.footer-col-title {
+  font-family: var(--ff-ui); font-size: 0.6rem; font-weight: 600;
+  letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 1.5rem; display: block;
+}
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 0.7rem; }
+.footer-links a {
+  font-family: var(--ff-ui); font-size: 0.82rem; font-weight: 300;
+  color: rgba(245,237,216,0.45); text-decoration: none; transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold-lt); }
+.footer-contact-item { margin-bottom: 0.8rem; }
+.footer-contact-item a { font-size: 0.82rem; color: rgba(245,237,216,0.45); text-decoration: none; transition: color 0.2s; }
+.footer-contact-item a:hover { color: var(--gold-lt); }
+.footer-contact-item p { font-size: 0.82rem; color: rgba(245,237,216,0.45); line-height: 1.6; }
+.footer-bottom {
+  max-width: 1200px; margin: 2.5rem auto 0;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+}
+.footer-copy { font-family: var(--ff-ui); font-size: 0.7rem; font-weight: 300; color: rgba(245,237,216,0.25); letter-spacing: 0.05em; }
+.footer-flame-sig {
+  font-family: var(--ff-display); font-size: 0.85rem; font-style: italic;
+  color: rgba(192,57,10,0.5);
+}
+
+/* -------------------------------------------------------
+   SCROLL REVEALS
+------------------------------------------------------- */
+.sr { opacity: 0; transform: translateY(30px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+.sr.in { opacity: 1; transform: translateY(0); }
+.sr-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+.sr-left.in { opacity: 1; transform: translateX(0); }
+.sr-right { opacity: 0; transform: translateX(30px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+.sr-right.in { opacity: 1; transform: translateX(0); }
+.d1 { transition-delay: 0.08s; }
+.d2 { transition-delay: 0.16s; }
+.d3 { transition-delay: 0.24s; }
+.d4 { transition-delay: 0.32s; }
+.d5 { transition-delay: 0.40s; }
+.d6 { transition-delay: 0.48s; }
+
+@keyframes fadeSlideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+/* -------------------------------------------------------
+   RESPONSIVE
+------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; min-height: 100vh; }
+  .hero-img-col { position: absolute; inset: 0; height: 100%; opacity: 0.35; }
+  .hero-text-col { padding: 140px 8% 100px; position: relative; z-index: 2; }
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .about-img-side { max-width: 480px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  .menu-grid { grid-template-columns: 1fr; }
+  .menu-grid > * { border-right: none; }
+  .menu-grid > *:last-child { border-bottom: none; }
+  .menu-grid > *:nth-last-child(2) { border-bottom: 1px solid rgba(245,237,216,0.07); }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 5%; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  section, .about-section, .menu-section, .contact-section { padding: 80px 5%; }
+  footer { padding: 4rem 5% 2rem; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .hero-text-col { padding: 120px 5% 80px; }
+  .hero-awards { flex-wrap: wrap; gap: 1.5rem; }
+  .about-pillars { grid-template-columns: 1fr; }
+  .hours-grid { grid-template-columns: 1fr; }
+  .hour-row:nth-child(2n) { border-left: none; }
+  .hour-row:nth-last-child(2) { border-bottom: 1px solid rgba(245,237,216,0.06); }
+}
+@media (max-width: 480px) {
+  .hero-ctas { flex-direction: column; align-items: flex-start; }
+  .btn-flame, .btn-outline-gold { width: 100%; justify-content: center; }
+  .menu-item { grid-template-columns: 80px 1fr; }
+  .menu-item-img { width: 80px; height: 80px; margin: 1rem 0 1rem 1rem; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- --- NAV ------------------------------------------- -->
+<nav id="mainNav">
+  <a href="#home" class="nav-logo">
+    <div class="nav-logo-inner">
+      <span class="n1">Lahori Flames</span>
+      <span class="n2">Fire & Flavour Since 1987</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">Our Story</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://wa.me/923001234567" class="nav-reserve">Reserve a Table</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mob-drawer" id="mobDrawer">
+  <a href="#about" onclick="closeDrawer()">Our Story</a>
+  <a href="#menu" onclick="closeDrawer()">Menu</a>
+  <a href="#contact" onclick="closeDrawer()">Contact</a>
+  <a href="https://wa.me/923001234567" target="_blank">Reserve a Table ?</a>
+</div>
+
+<!-- --- HERO -------------------------------------------- -->
+<section class="hero" id="home">
+  <div class="hero-bg-half"></div>
+  <div class="hero-img-col">
+    <img class="hero-food-img" src="https://images.unsplash.com/photo-1567337710282-00832b415979?w=1400&q=85" alt="Lahori Karahi" loading="eager">
+  </div>
+  <div class="hero-text-col">
+    <div class="hero-pretitle">
+      <div class="pretitle-line"></div>
+      <span class="pretitle-text">Lahore · Pakistan · Est. 1987</span>
+    </div>
+    <h1>
+      <span class="l1">Where the</span>
+      <span class="l2">Flames</span>
+      <span class="l3">Never Die.</span>
+    </h1>
+    <p class="hero-desc">Three generations of open-flame mastery. Every karahi hand-spiced, every naan pulled from a 900°C tandoor, every bite carrying the soul of Old Lahore.</p>
+    <div class="hero-ctas">
+      <a href="#menu" class="btn-flame"><span>Explore the Menu</span></a>
+      <a href="#contact" class="btn-outline-gold">Find Us</a>
+    </div>
+    <div class="hero-awards">
+      <div class="award"><span class="award-num">37</span><span class="award-label">Years of Fire</span></div>
+      <div class="award"><span class="award-num">85k+</span><span class="award-label">Guests Served</span></div>
+      <div class="award"><span class="award-num">4.9?</span><span class="award-label">Google Rating</span></div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-pill"></div>
+  </div>
+</section>
+
+<!-- --- MARQUEE ------------------------------------------ -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <!-- duplicated for seamless loop -->
+    <div class="marquee-item"><span>Authentic Lahori Karahi</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Open-Flame Tandoor</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Family Dining Since 1987</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Hand-Ground Spices Daily</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Slow-Cooked Nihari</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Private Dining Available</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Authentic Lahori Karahi</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Open-Flame Tandoor</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Family Dining Since 1987</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Hand-Ground Spices Daily</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Slow-Cooked Nihari</span><span class="marquee-dot"></span></div>
+    <div class="marquee-item"><span>Private Dining Available</span><span class="marquee-dot"></span></div>
+  </div>
+</div>
+
+<!-- --- ABOUT -------------------------------------------- -->
+<section class="about-section" id="about">
+  <div class="about-grid">
+    <div class="about-img-side sr-left">
+      <div class="about-img-frame">
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&q=85" alt="Inside Lahori Flames">
+      </div>
+      <div class="about-year-badge">
+        <span class="yr">1987</span>
+        <span class="yr-lbl">Founded</span>
+      </div>
+      <div class="about-corner-deco"></div>
+    </div>
+    <div class="about-text-side sr-right">
+      <div class="section-eyebrow">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-text">Our Story</span>
+      </div>
+      <h2 class="section-title">Born in the Smoke<br>of <em>Old Lahore</em></h2>
+      <p class="about-lead">"My grandfather lit the first fire in a corner of Anarkali Bazaar with nothing but an iron wok and a family recipe. That fire has never gone out."</p>
+      <p class="about-body">In 1987, Ustad Bashir Ahmad set up a single karahi stall on the streets of Gulberg. Word spread — not through advertising, but through the irresistible pull of smoke rising above the rooftops. Thirty-seven years later, Lahori Flames is a Lahore institution, carrying the same hand-ground masalas, the same slow-fire philosophy, and the same obsessive dedication to flavour that made people queue around the block in the eighties. Nothing has changed. That's the point.</p>
+      <div class="about-pillars">
+        <div class="pillar">
+          <span class="pillar-icon">??</span>
+          <div class="pillar-title">Open Flame Only</div>
+          <p class="pillar-sub">Every dish cooked on live fire — no gas shortcuts</p>
+        </div>
+        <div class="pillar">
+          <span class="pillar-icon">??</span>
+          <div class="pillar-title">Daily Ground Spices</div>
+          <p class="pillar-sub">Masalas stone-ground fresh every morning at 5 AM</p>
+        </div>
+        <div class="pillar">
+          <span class="pillar-icon">??</span>
+          <div class="pillar-title">Iron Wok Tradition</div>
+          <p class="pillar-sub">The same seasoned iron karahis used since 1987</p>
+        </div>
+        <div class="pillar">
+          <span class="pillar-icon">????????</span>
+          <div class="pillar-title">Family Tables</div>
+          <p class="pillar-sub">Private dining rooms for gatherings of 4 to 50</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- --- MENU --------------------------------------------- -->
+<section class="menu-section" id="menu">
+  <div class="menu-inner">
+    <div class="menu-header sr">
+      <div class="section-eyebrow" style="justify-content:center;">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-text">Signature Dishes</span>
+        <div class="eyebrow-line"></div>
+      </div>
+      <h2 class="section-title" style="text-align:center; margin-top:0.5rem;">The Flames <em>Menu</em></h2>
+      <div class="menu-tabs" style="margin-top:1.8rem;">
+        <button class="menu-tab active">Mains</button>
+        <button class="menu-tab">Starters</button>
+        <button class="menu-tab">Breads</button>
+        <button class="menu-tab">Desserts</button>
+      </div>
+    </div>
+
+    <div class="menu-grid">
+
+      <!-- Item 1 -->
+      <div class="menu-item sr d1">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=300&q=80" alt="Lahori Karahi" loading="lazy">
+        </div>
+        <div class="menu-item-body">
+          <span class="menu-item-cat">Signature</span>
+          <h3 class="menu-item-name">Lahori Desi Karahi</h3>
+          <p class="menu-item-desc">Mutton or chicken slow-braised in iron wok with vine tomatoes, ginger julienne, fresh coriander and our 1987 masala blend. Served with naan.</p>
+          <div class="menu-item-footer">
+            <span class="menu-price">Rs. 1,650 <span>/ serving</span></span>
+            <div class="spice-dots"><div class="spice-dot lit"></div><div class="spice-dot lit"></div><div class="spice-dot lit"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="menu-item sr d2">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=300&q=80" alt="Nihari" loading="lazy">
+        </div>
+        <div class="menu-item-body">
+          <span class="menu-item-cat">Heritage</span>
+          <h3 class="menu-item-name">Overnight Nihari</h3>
+          <p class="menu-item-desc">Beef shank simmered 12 hours in a bone-rich broth with kewra, star anise and chilli. Crowned with crispy fried onions, ginger, lime and fresh ghee.</p>
+          <div class="menu-item-footer">
+            <span class="menu-price">Rs. 1,350 <span>/ bowl</span></span>
+            <div class="spice-dots"><div class="spice-dot lit"></div><div class="spice-dot lit"></div><div class="spice-dot"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="menu-item sr d3">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=300&q=80" alt="Seekh Kebab" loading="lazy">
+        </div>
+        <div class="menu-item-body">
+          <span class="menu-item-cat">Grill</span>
+          <h3 class="menu-item-name">Charcoal Seekh Kebab</h3>
+          <p class="menu-item-desc">Minced beef with green chillies, charred on open coal. Six skewers served on sizzle plate with mint raita, onion rings and our house chutney.</p>
+          <div class="menu-item-footer">
+            <span class="menu-price">Rs. 1,100 <span>/ 6 pcs</span></span>
+            <div class="spice-dots"><div class="spice-dot lit"></div><div class="spice-dot lit"></div><div class="spice-dot"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="menu-item sr d4">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=300&q=80" alt="Biryani" loading="lazy">
+        </div>
+        <div class="menu-item-body">
+          <span class="menu-item-cat">Slow Cook</span>
+          <h3 class="menu-item-name">Dum Pukht Biryani</h3>
+          <p class="menu-item-desc">Aged Basmati sealed under dough with saffron, caramelised onions and whole spiced mutton. Cooked dum style on live flame. Served with boondi raita.</p>
+          <div class="menu-item-footer">
+            <span class="menu-price">Rs. 1,050 <span>/ plate</span></span>
+            <div class="spice-dots"><div class="spice-dot lit"></div><div class="spice-dot lit"></div><div class="spice-dot"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 5 -->
+      <div class="menu-item sr d5">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300&q=80" alt="Tandoori Naan" loading="lazy">
+        </div>
+        <div class="menu-item-body">
+          <span class="menu-item-cat">From the Tandoor</span>
+          <h3 class="menu-item-name">Roghni Keema Naan</h3>
+          <p class="menu-item-desc">Leavened dough stuffed with spiced minced meat, sealed and slapped into a 900°C tandoor until blistered. Brushed with desi ghee on departure.</p>
+          <div class="menu-item-footer">
+            <span class="menu-price">Rs. 280 <span>/ piece</span></span>
+            <div class="spice-dots"><div class="spice-dot lit"></div><div class="spice-dot"></div><div class="spice-dot"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 6 -->
+      <div class="menu-item sr d6">
+        <div class="menu-item-img">
+          <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=300&q=80" alt="Gajar Halwa" loading="lazy">
+        </div>
+        <div class="menu-item-body">
+          <span class="menu-item-cat">Sweet Endings</span>
+          <h3 class="menu-item-name">Gajar ka Halwa</h3>
+          <p class="menu-item-desc">Winter carrots slow-sautéed in desi ghee with whole milk, green cardamom and khoya — reduced until luxuriously thick. Topped with crushed pistachios.</p>
+          <div class="menu-item-footer">
+            <span class="menu-price">Rs. 395 <span>/ bowl</span></span>
+            <div class="spice-dots"><div class="spice-dot"></div><div class="spice-dot"></div><div class="spice-dot"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- --- EXPERIENCE QUOTE ------------------------------- -->
+<div class="experience-section">
+  <div class="exp-bg"></div>
+  <div class="exp-content sr">
+    <blockquote>"In Lahore, the best meals aren't found — they <em>find you</em>. Follow the smoke."</blockquote>
+    <span class="exp-attr">— A Food Critic, Dawn Magazine, 2022</span>
+  </div>
+</div>
+
+<!-- --- CONTACT ------------------------------------------ -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="menu-header sr" style="margin-bottom:4rem;">
+      <div class="section-eyebrow">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-text">Visit Us</span>
+      </div>
+      <h2 class="section-title">Come to <em>the Fire</em></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-left sr-left">
+        <ul class="contact-info-list">
+          <li>
+            <div class="ci-icon">??</div>
+            <div>
+              <span class="ci-label">Address</span>
+              <span class="ci-val">72-B, Main Boulevard, Gulberg III<br>Lahore, Punjab 54660, Pakistan</span>
+            </div>
+          </li>
+          <li>
+            <div class="ci-icon">??</div>
+            <div>
+              <span class="ci-label">Reservations</span>
+              <span class="ci-val"><a href="tel:+924235678901">+92 42 3567 8901</a></span>
+            </div>
+          </li>
+          <li>
+            <div class="ci-icon">??</div>
+            <div>
+              <span class="ci-label">Email</span>
+              <span class="ci-val"><a href="mailto:hello@lahoriflames.pk">hello@lahoriflames.pk</a></span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="hours-grid">
+          <div class="hour-row"><span class="hour-day">Mon – Thu</span><span class="hour-time">12 PM – 1 AM</span></div>
+          <div class="hour-row"><span class="hour-day">Friday</span><span class="hour-time">12 PM – 2 AM</span></div>
+          <div class="hour-row"><span class="hour-day">Saturday</span><span class="hour-time">11 AM – 2 AM</span></div>
+          <div class="hour-row"><span class="hour-day">Sunday</span><span class="hour-time">11 AM – 1 AM</span></div>
+        </div>
+
+        <a href="https://wa.me/923001234567?text=Assalam%20o%20Alaikum!%20I'd%20like%20to%20reserve%20a%20table%20at%20Lahori%20Flames." target="_blank" rel="noopener" class="wa-button">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.524 5.847L.057 23.5a.5.5 0 00.613.613l5.653-1.467A11.935 11.935 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.002-1.367l-.358-.213-3.714.964.983-3.598-.233-.37A9.818 9.818 0 1112 21.818z"/>
+          </svg>
+          Reserve via WhatsApp
+        </a>
+      </div>
+
+      <div class="contact-right sr-right">
+        <div class="map-frame">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3401.875!2d74.3476!3d31.5204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzHCsDMxJzEzLjQiTiA3NMKwMjAnNTEuNCJF!5e0!3m2!1sen!2spk!4v1234567890"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            title="Lahori Flames Location — Gulberg III, Lahore">
+          </iframe>
+        </div>
+        <div class="map-action-row">
+          <a href="https://maps.google.com/?q=Gulberg+III+Lahore" target="_blank" rel="noopener" class="map-btn">
+            ?? Get Directions
+          </a>
+          <a href="https://wa.me/923001234567" target="_blank" rel="noopener" class="map-btn">
+            ?? WhatsApp Order
+          </a>
+          <a href="tel:+924235678901" class="map-btn">
+            ?? Call Now
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- --- FOOTER -------------------------------------------- -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand-col">
+      <span class="footer-logo-big">Lahori Flames</span>
+      <span class="footer-tagline">Fire & Flavour Since 1987</span>
+      <p class="footer-bio">Three generations of open-flame cooking. The iron woks are the same. The fire is the same. The flavour is unforgettable.</p>
+    </div>
+    <div>
+      <span class="footer-col-title">Navigate</span>
+      <ul class="footer-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">Our Story</a></li>
+        <li><a href="#menu">The Menu</a></li>
+        <li><a href="#contact">Find Us</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="footer-col-title">Dine With Us</span>
+      <ul class="footer-links">
+        <li><a href="https://wa.me/923001234567">Reserve a Table</a></li>
+        <li><a href="https://wa.me/923001234567">Private Events</a></li>
+        <li><a href="https://wa.me/923001234567">Takeaway Order</a></li>
+        <li><a href="https://wa.me/923001234567">Catering</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="footer-col-title">Contact</span>
+      <div class="footer-contact-item"><p>72-B, Main Blvd, Gulberg III<br>Lahore, Pakistan</p></div>
+      <div class="footer-contact-item"><a href="tel:+924235678901">+92 42 3567 8901</a></div>
+      <div class="footer-contact-item"><a href="https://wa.me/923001234567">+92 300 123 4567 (WA)</a></div>
+      <div class="footer-contact-item"><a href="mailto:hello@lahoriflames.pk">hello@lahoriflames.pk</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Lahori Flames. All rights reserved. Lahore, Pakistan.</span>
+    <span class="footer-flame-sig">The fire never goes out.</span>
+  </div>
+</footer>
+
+<script>
+/* — NAV scroll behaviour — */
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* — Mobile drawer — */
+function toggleDrawer() { document.getElementById('mobDrawer').classList.toggle('open'); }
+function closeDrawer() { document.getElementById('mobDrawer').classList.remove('open'); }
+document.addEventListener('click', e => {
+  const d = document.getElementById('mobDrawer');
+  const h = document.querySelector('.hamburger');
+  if (!d.contains(e.target) && !h.contains(e.target)) d.classList.remove('open');
+});
+
+/* — Scroll reveals — */
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const group = entry.target.closest('.menu-grid, .about-grid, .contact-grid, .about-pillars');
+      if (group) {
+        group.querySelectorAll('.sr, .sr-left, .sr-right').forEach((el, i) => {
+          setTimeout(() => el.classList.add('in'), i * 80);
+        });
+      } else {
+        entry.target.classList.add('in');
+      }
+      obs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.sr, .sr-left, .sr-right').forEach(el => obs.observe(el));
+
+/* — Active nav link highlight — */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a:not(.nav-reserve)');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--gold-lt)' : '';
+  });
+}, { passive: true });
+
+/* — Menu tabs (visual only) — */
+document.querySelectorAll('.menu-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
